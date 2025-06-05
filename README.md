@@ -15,47 +15,56 @@
 * 程式語言：C
 * 程式編輯器：Visual Studio Code
 
-**相依套件：**
-```bash
-
-```
-
 **檔案說明：**
 ```bash
 .
 ├── LICENSE
 ├── README.md
-└──  code  # 開發程式資料夾
-      ├── main.py  # 主程式
-      ├── readFile.py  # 讀取組語模組
-      ├── RV32IMemory.py  # 模擬memory模組
-      ├── RV32IRegisters.py  # 模擬register模組
-      ├── cpuCore.py  # 模擬CPU模組
-      ├── instructionTyple.py  # instruction與Typle的對應模組
-      ├── rType.py  # 模擬R-Type instruction運行模組
-      ├── iType.py  # 模擬I-Type instruction運行模組
-      ├── sType.py  # 模擬S-Type instruction運行模組
-      ├── bType.py  # 模擬B-Type instruction運行模組
-      ├── uType.py  # 模擬U-Type instruction運行模組
-      ├── jType.py  # 模擬J-Type instruction運行模組
-      ├── otherType.py  # 模擬ecall instruction運行模組
-      └── try.asm  # 測試檔案
+└──  Firewall  # 開發程式資料夾
+      ├── main.c  # 主程式
+      ├── variables.h  # 定義變數
+      ├── sharedFunctions.h  # 共用函式
+      ├── sharedFunctions.c  # 共用函式
+      ├── manageBlocklist.h  # 管理封鎖名單
+      ├── manageBlocklist.c  # 管理封鎖名單
+      ├── executeFirewall.h  # 執行防火牆
+      ├── executeFirewall.c  # 執行防火牆
+      ├── viewLogs.h  # 查詢日誌
+      ├── viewLogs.c  # 查詢日誌
+      ├── blocklist.conf  # 封鎖名單
+      ├── firewall.log  # 日誌
+      └── firewall  # Unix執行檔
 ```
 
 ## 貳、設計概念
-本程式設計可以分為以下幾個步驟，具體流程如下：
-* 讀取.asm
-* 組合語言正規化，提取語法
-* 存入memory
-* 運行instruction
-  * 解析該instruction所屬哪種Type
-  * 針對不同Type，提取不同參數
-  * 針對該instruction，進行存取register、邏輯運算、轉跳...等操作
+本程式設計具體流程如下：會使用NFQUEUE，是Linux Netfilter提供的一個機制，可讓封包轉交給程式進一步處理方式。當封包加入佇列後，開發者撰寫的程式可以檢查、修改或決定是否丟棄封包。
 
 ## 參、運行方式
-**運行方式：** 請開啟終端機，並進入存放該檔案資料夾，執行以下指令進行模擬
+**運行方式：**
+* 安裝套件
 ```shell
-python main.py try.asm
+sudo apt update
+sudo apt update
+sudo apt install build-essential
+sudo apt install linux-headers-$(uname -r)
+sudo apt install libnetfilter-queue-dev
+sudo apt install libnfnetlink-dev
+```
+* 將進入主機的封包導入到Netfilter Queue
+```shell
+sudo iptables -I INPUT -j NFQUEUE --queue-num 0
+```
+* 編譯程式
+```shell
+gcc -D_GNU_SOURCE -o firewall main.c manageBlocklist.c executeFirewall.c sharedFunctions.c viewLogs.c -lnetfilter_queue
+```
+* 運行程式
+```shell
+sudo ./firewall
+```
+* 清空所有的iptables規則
+```shell
+sudo iptables -F
 ```
 > [!Warning]
-> 請特別注意，由於我在解讀RISC-V手冊時對於ecall系統調用號碼的理解尚不完全，因此目前實作中僅涵蓋了基本的讀取、寫入與關閉等功能。如果系統調用號碼有所錯誤，還請多多包涵。另外，對於某些指令，我直接以十進位進行處理，這樣的做法可能會導致本應使用二進位格式運算的結果有所偏差，尤其在不同位數下的計算結果可能會有所不同。敬請理解。
+> 請特別注意，若有執行"sudo iptables -I INPUT -j NFQUEUE --queue-num 0"，記得事後需要執行"sudo iptables -F"，否則網路連線可能會發生異常。
