@@ -1,4 +1,4 @@
-# Linux-based-Firewall
+# Linux based Firewall
 
 自製一套基於Linux核心的防火牆，可以有效阻擋惡意IP跟Port。
 
