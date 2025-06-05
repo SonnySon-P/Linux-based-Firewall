@@ -1,0 +1,28 @@
+sudo apt update
+sudo apt update
+sudo apt install build-essential \
+                 linux-headers-$(uname -r) \
+                 libnetfilter-queue-dev \
+                 libnfnetlink-dev
+
+sudo iptables -I INPUT -j NFQUEUE --queue-num 0
+設定 Linux 防火牆（iptables）規則，將進入主機的封包導入到 Netfilter Queue (NFQUEUE) 給你的使用者空間程式處理。
+sudo iptables -F
+
+gcc -D_GNU_SOURCE -o firewall main.c manageBlocklist.c executeFirewall.c sharedFunctions.c viewLogs.c -lnetfilter_queue
+sudo ./firewall    
+
+把 libnetfilter_queue 函式庫連結到你的程式中。
+
+main.c manageBlocklist.c executeFirewall.c sharedFunctions.c viewLogs.c -lnetfilter_queue
+In file included from executeFirewall.c:8:
+sharedFunctions.h:4:6: error: conflicting types for ‘pause’; have ‘void()’
+    4 | void pause();
+      |      ^~~~~
+In file included from executeFirewall.c:5:
+/usr/include/unistd.h:489:12: note: previous declaration of ‘pause’ with type ‘int(void)’
+  489 | extern int pause (void);
+      |            ^~~~~
+
+
+
