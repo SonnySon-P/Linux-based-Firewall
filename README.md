@@ -111,6 +111,6 @@
 6. 顯示日誌
 <br>
   <div align="center">
-  	<img src="./截圖6.png" alt="Editor" width="750">
+  	<img src="./截圖6.png" alt="Editor" width="760">
   </div>
 <br>
