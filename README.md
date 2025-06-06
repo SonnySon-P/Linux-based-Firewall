@@ -48,7 +48,7 @@
    sudo apt install libnfnetlink-dev
    ```
 
-2. 將進入主機的封包導入到Netfilter Queue（非必要，若執行防火床功能時，出現"System command failed. 'sudo iptables -I INPUT -j NFQUEUE --queue-num 0' is not executed."時，在嘗試使用）
+2. 將進入主機的封包導入到Netfilter Queue（非必要，若執行防火牆功能時，出現"System command failed. 'sudo iptables -I INPUT -j NFQUEUE --queue-num 0' is not executed."時，在嘗試使用）
    ```shell
    sudo iptables -I INPUT -j NFQUEUE --queue-num 0
    ```
