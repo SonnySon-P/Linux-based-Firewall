@@ -48,23 +48,53 @@
    sudo apt install libnfnetlink-dev
    ```
 
-2. 將進入主機的封包導入到Netfilter Queue（）
+2. 將進入主機的封包導入到Netfilter Queue（非必要，若執行防火床功能時，出現"System command failed. 'sudo iptables -I INPUT -j NFQUEUE --queue-num 0' is not executed."時，在嘗試使用）
    ```shell
    sudo iptables -I INPUT -j NFQUEUE --queue-num 0
    ```
-> [!Note]
-> iptables的指令是可以在c語言中。
-* 編譯程式
-```shell
-gcc -D_GNU_SOURCE -o firewall main.c manageBlocklist.c executeFirewall.c sharedFunctions.c viewLogs.c -lnetfilter_queue
-```
-* 運行程式
-```shell
-sudo ./firewall
-```
-* 清空所有的iptables規則
-```shell
-sudo iptables -F
-```
+   
+3. 編譯程式
+   ```shell
+   gcc -D_GNU_SOURCE -o firewall main.c manageBlocklist.c executeFirewall.c sharedFunctions.c viewLogs.c -lnetfilter_queue
+   ```
+
+4. 運行程式
+   ```shell
+   sudo ./firewall
+   ```
+
+5. 清空所有的iptables規則（非必要）
+   ```shell
+   sudo iptables -F
+   ```
 > [!Warning]
-> 請特別注意，若有執行"sudo iptables -I INPUT -j NFQUEUE --queue-num 0"，記得事後需要執行"sudo iptables -F"，否則網路連線可能會發生異常。
+  > 請特別注意，若有發生網路連線發生異常，請嘗試執行"sudo iptables -F"。
+
+**二、運行結果：**
+1. 主選單
+<br>
+  <div align="center">
+  	<img src="./截圖1.png" alt="Editor" width="500">
+  </div>
+<br>
+
+2. 管理封鎖名單選單
+<br>
+  <div align="center">
+  	<img src="./截圖2.png" alt="Editor" width="500">
+  </div>
+<br>
+
+3. 管理IP封鎖名單選單
+<br>
+  <div align="center">
+  	<img src="./截圖3.png" alt="Editor" width="500">
+  </div>
+<br>
+
+4. 管理IP封鎖名單選單
+<br>
+  <div align="center">
+  	<img src="./截圖4.png" alt="Editor" width="500">
+  </div>
+<br>
