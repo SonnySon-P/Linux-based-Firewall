@@ -22,14 +22,14 @@
 ├── README.md
 └──  Firewall  # 開發程式資料夾
       ├── main.c  # 主程式
-      ├── variables.h  # 定義變數
-      ├── sharedFunctions.h  # 共用函式
+      ├── variables.h  # 定義變數（標頭檔）
+      ├── sharedFunctions.h  # 共用函式（標頭檔）
       ├── sharedFunctions.c  # 共用函式
-      ├── manageBlocklist.h  # 管理封鎖名單
+      ├── manageBlocklist.h  # 管理封鎖名單（標頭檔）
       ├── manageBlocklist.c  # 管理封鎖名單
-      ├── executeFirewall.h  # 執行防火牆
+      ├── executeFirewall.h  # 執行防火牆（標頭檔）
       ├── executeFirewall.c  # 執行防火牆
-      ├── viewLogs.h  # 查詢日誌
+      ├── viewLogs.h  # 查詢日誌（標頭檔）
       ├── viewLogs.c  # 查詢日誌
       ├── blocklist.conf  # 封鎖名單
       ├── firewall.log  # 日誌
