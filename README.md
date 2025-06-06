@@ -51,10 +51,9 @@
 2. 至executeFirewall.c的160行，添加root的密碼
    ```shell
    reply = system("echo '你的密碼' | sudo iptables -I INPUT -j NFQUEUE --queue-num 0");
-   sudo iptables -I INPUT -j NFQUEUE --queue-num 0
    ```
 > [!Warning]
-> 請特別注意，以上主要是將進入主機的封包導入到Netfilter Queue，為重要系統運行關鍵步驟。所以，若出現"System command failed. 'sudo iptables -I INPUT -j NFQUEUE --queue-num 0' is not executed."時，可嘗試手動在終端機執行"sudo iptables -I INPUT -j NFQUEUE --queue-num 0"。
+> 請特別注意，以上程式碼主要功能是將進入主機的封包導入到Netfilter Queue，為重要系統運行關鍵步驟。所以，若出現"System command failed. 'sudo iptables -I INPUT -j NFQUEUE --queue-num 0' is not executed."時，可嘗試手動在終端機執行"sudo iptables -I INPUT -j NFQUEUE --queue-num 0"。
    
 3. 編譯程式
    ```shell
