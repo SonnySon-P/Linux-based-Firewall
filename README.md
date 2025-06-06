@@ -98,3 +98,24 @@
   	<img src="./截圖4.png" alt="Editor" width="500">
   </div>
 <br>
+
+5. IP封鎖名單選單
+<br>
+  <div align="center">
+  	<img src="./截圖5.png" alt="Editor" width="500">
+  </div>
+<br>
+
+6. 執行防火牆
+<br>
+  <div align="center">
+  	<img src="./截圖6.png" alt="Editor" width="800">
+  </div>
+<br>
+
+7. 顯示日誌
+<br>
+  <div align="center">
+  	<img src="./截圖7.png" alt="Editor" width="800">
+  </div>
+<br>
