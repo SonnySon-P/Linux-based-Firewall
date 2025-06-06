@@ -3,19 +3,19 @@
 自製一套基於Linux核心的防火牆，可以有效阻擋惡意IP跟Port。
 
 ## 壹、基本說明
-**動機：**
-隨著近期RISC-V處理器市佔率的穩步提升，我一直希望能深入了解這項技術。回顧過去在學習計算機組織與結構課程時，曾經接觸過另一種精簡指令集架構-MIPS，因此我決定藉由開發一個RISC-V組合語言模擬器，來快速掌握不同指令集的結構與用途。
+**ㄧ、動機：**
+隨著近期資安議題日益升溫，關於防範機制的討論與創新也持續不斷。然而，在眾多防護手段中，最為經典且基礎的資訊安全措施-防火牆，依然是目前最有效且被廣泛應用的防禦機制。無論是路由器還是電腦，防火牆在各種網路環境中扮演著至關重要的角色，形成了資訊安全的第一道防線。基於此，本文將從學術研究的角度出發，著手開發一套防火牆系統，旨在為教學提供一個示範工具，並藉此加深對現代資訊安全防範技術的理解與應用。
 
-**目的：**
-此程式基於RV32I指令集進行開發(不包含虛擬指令集)，可以通過讀取組合語言檔案(.asm)，執行數位邏輯運算，幫助我深入理解RISC-V指令集的各種細節。
+**二、設計概念：**
+該系統的主要目的是有效阻擋來自惡意IP和Port的攻擊流量，並提供一個高效的防護機制。系統基於Linux操作平台，並利用NFQUEUE機制來實現這一功能。NFQUEUE是Linux Netfilter框架提供的一個強大功能，它能夠將進來的封包轉交給用戶空間的程式進行進一步的處理。當封包被加入到隊列後，開發者編寫的應用程式便可以檢查這些封包的內容，根據預定的安全策略，進行修改或決定是否丟棄該封包。這樣的機制不僅增強了防禦效果，還能根據實際需求對封包流量進行細緻的監控與管理，從而有效抵禦各種惡意攻擊。
 
-**開發環境：**
+**三、開發環境：**
 * 虛擬機：VirtualBox
 * 作業系統：Ubuntu 22.04
 * 程式語言：C
 * 程式編輯器：Visual Studio Code
 
-**檔案說明：**
+**四、檔案說明：**
 ```bash
 .
 ├── LICENSE
@@ -36,24 +36,24 @@
       └── firewall  # Unix執行檔
 ```
 
-## 貳、設計概念
-本程式設計具體流程如下：會使用NFQUEUE，是Linux Netfilter提供的一個機制，可讓封包轉交給程式進一步處理方式。當封包加入佇列後，開發者撰寫的程式可以檢查、修改或決定是否丟棄封包。
+## 貳、運行方式
+**一、運行方式：**
+1. 安裝套件
+   ```shell
+   sudo apt update
+   sudo apt update
+   sudo apt install build-essential
+   sudo apt install linux-headers-$(uname -r)
+   sudo apt install libnetfilter-queue-dev
+   sudo apt install libnfnetlink-dev
+   ```
 
-## 參、運行方式
-**運行方式：**
-* 安裝套件
-```shell
-sudo apt update
-sudo apt update
-sudo apt install build-essential
-sudo apt install linux-headers-$(uname -r)
-sudo apt install libnetfilter-queue-dev
-sudo apt install libnfnetlink-dev
-```
-* 將進入主機的封包導入到Netfilter Queue
-```shell
-sudo iptables -I INPUT -j NFQUEUE --queue-num 0
-```
+2. 將進入主機的封包導入到Netfilter Queue（）
+   ```shell
+   sudo iptables -I INPUT -j NFQUEUE --queue-num 0
+   ```
+> [!Note]
+> iptables的指令是可以在c語言中。
 * 編譯程式
 ```shell
 gcc -D_GNU_SOURCE -o firewall main.c manageBlocklist.c executeFirewall.c sharedFunctions.c viewLogs.c -lnetfilter_queue
