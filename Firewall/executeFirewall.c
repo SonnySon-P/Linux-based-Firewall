@@ -155,6 +155,15 @@ static int cb(struct nfq_q_handle *qh, struct nfgenmsg *nfmsg, struct nfq_data *
 
 // 啟動防火牆
 void startFirewall() {
+    // 執行iptables指令，封包導入到Netfilter Queue
+    int reply = 0;
+    reply = system("echo '你的密碼' | sudo iptables -I INPUT -j NFQUEUE --queue-num 0");
+    if (reply == -1) {
+        printf(RED "System command failed. 'sudo iptables -I INPUT -j NFQUEUE --queue-num 0' is not executed.\n" RESET);
+        halt();
+        return;
+    }
+
     // 變數宣告
     struct nfq_handle *h;  // 處理網路封包的隊列
     struct nfq_q_handle *qh;  // 代表和管理Netfilter Queue中的隊列
@@ -228,9 +237,18 @@ void startFirewall() {
     nfq_destroy_queue(qh);
     nfq_close(h);
     restoreMode(&oldTio);  // 恢復終端設定
-    printf(RED "Firewall stopped.\n" RESET);
-    halt();
-    return;
+
+    // 執行iptables指令，清空所有的iptables規則
+    reply = system("sudo iptables -F");
+    if (reply == -1) {
+        printf(RED "System command failed. 'sudo iptables -F' is not executed.\n" RESET);
+        halt();
+        return;
+    } else {
+        printf(RED "Firewall stopped.\n" RESET);
+        halt();
+        return;
+    }
 }
 
 // 執行防火牆選單
