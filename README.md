@@ -94,7 +94,7 @@
   </div>
 <br>
 
-4. 管理IP封鎖名單選單
+4. 刪除IP封鎖名單
 <br>
   <div align="center">
   	<img src="./截圖4.png" alt="Editor" width="500">
